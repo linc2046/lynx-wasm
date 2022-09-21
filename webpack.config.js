@@ -18,7 +18,7 @@ module.exports = {
     filename: "[name].js"
   },
   devServer: {
-    contentBase: dist,
+    static: dist,
   },
   plugins: [
     new CopyPlugin({
