@@ -1,3 +1,10 @@
+
+# lynx-wasm
+
+:clap: Webassembly demo for running lynx language in browsers.
+
+It's based on `wasm-pack` and `webpack5`.
+
 ## How to install
 
 ```sh
