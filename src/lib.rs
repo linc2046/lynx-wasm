@@ -1,6 +1,10 @@
 use wasm_bindgen::prelude::*;
 use web_sys::console;
-
+use lynxlang::env::Env;
+use lynxlang::evaluator::Evaluator;
+use lynxlang::parser::Parser;
+use std::cell::RefCell;
+use std::rc::Rc;
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -19,9 +23,21 @@ pub fn main_js() -> Result<(), JsValue> {
     #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
 
+    // todo
+    let input = r#"push([1,2,3], { 1: true, "it worked": [1,2,3,4] });"#;
+    let program = Parser::get(input).parse_program();
+    let mut evaluator = Evaluator::new(Rc::new(RefCell::new(Env::new())));
+    
+    evaluator.builtin();
 
-    // Your code goes here!
-    console::log_1(&JsValue::from_str("Hello world 888!"));
+    match evaluator.eval_program(program) {
+        Some(value) => {
+            console::log_1(&JsValue::from_str(format!("{:?}", value).as_str()));
+        },
+        None => {
+            console::log_1(&JsValue::from_str("Null"));
+        }
+    }
 
     Ok(())
 }
